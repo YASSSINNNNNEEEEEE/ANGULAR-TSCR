@@ -1,0 +1,31 @@
+<!-- FILE: src/app/demandes/demandes.html (NEW) -->
+<div class="demandes-container">
+  <h2>Demandes de réservation</h2>
+
+  @if (liste().length === 0) {
+    <p class="vide">Aucune demande pour le moment.</p>
+  }
+
+  @for (r of liste(); track r.id) {
+    <div class="demande" [class.en-attente]="r.statut === 'EN_ATTENTE'">
+      <div class="infos">
+        <h3>{{ nomVoiture(r.vehiculeId) }}</h3>
+        <p>👤 Client #{{ r.clientId }}</p>
+        <p>📅 Du {{ r.dateDebut }} au {{ r.dateFin }}</p>
+        <p class="prix">{{ r.prixTotal }} DT</p>
+      </div>
+
+      <div class="actions">
+        @if (r.statut === 'EN_ATTENTE') {
+          <span class="etat attente">En attente</span>
+          <button class="btn-accepter" (click)="repondre(r.id, 'ACCEPTEE')">✔ Accepter</button>
+          <button class="btn-refuser" (click)="repondre(r.id, 'REFUSEE')">✖ Refuser</button>
+        } @else if (r.statut === 'ACCEPTEE') {
+          <span class="etat acceptee">Acceptée</span>
+        } @else {
+          <span class="etat refusee">Refusée</span>
+        }
+      </div>
+    </div>
+  }
+</div>

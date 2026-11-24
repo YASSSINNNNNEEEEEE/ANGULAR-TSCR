@@ -1,0 +1,63 @@
+<!-- FILE: src/app/voiture-detail/voiture-detail.html -->
+<div class="etat-page" *ngIf="chargement()">Chargement...</div>
+
+<div class="etat-page erreur-page" *ngIf="erreur()">
+  {{ erreur() }}
+  <br><br>
+  <button routerLink="/voitures" class="btn-retour">← Retour au catalogue</button>
+</div>
+
+<div class="detail-container" *ngIf="voiture() as v">
+  <button routerLink="/voitures" class="btn-retour">← Retour au catalogue</button>
+
+  <div class="contenu">
+    <img [src]="v.photoUrl" [alt]="v.marque" class="image-principale">
+
+    <div class="infos-voiture">
+      <h1>{{ v.marque }} {{ v.modele }}</h1>
+      <p class="immatriculation">Immatriculation : {{ v.immatriculation }}</p>
+
+      <div class="caracteristiques">
+        <span>📍 {{ v.ville }}</span>
+        <span>⛽ {{ v.carburant }}</span>
+        <span>⚙️ {{ v.transmission }}</span>
+      </div>
+
+      <div class="prix-box">
+        <p>Prix par jour : <strong>{{ v.prixParJour }} DT</strong></p>
+        <p *ngIf="v.reduction > 0" class="promo-texte">Promotion : -{{ v.reduction }}%</p>
+      </div>
+
+      <div class="formulaire-reservation" *ngIf="auth.user()">
+        <h3>Réserver ce véhicule</h3>
+
+        <label>Date de début</label>
+        <input type="date" [(ngModel)]="dateDebut" (change)="calculerTotal()">
+
+        <label>Date de fin</label>
+        <input type="date" [(ngModel)]="dateFin" (change)="calculerTotal()">
+
+        <div *ngIf="prixTotal > 0" class="total-box">
+          Total à payer : <strong>{{ prixTotal }} DT</strong>
+        </div>
+
+        <button (click)="reserver()" class="btn-reserver">Confirmer la réservation</button>
+
+        <p *ngIf="message()" [class.message-succes]="!messageErreur()" [class.message-erreur]="messageErreur()">
+          {{ message() }}
+        </p>
+      </div>
+
+      <div class="connexion-requise" *ngIf="!auth.user()">
+        <h3>🔒 Connexion requise</h3>
+        <p>Vous devez avoir un compte pour réserver ce véhicule.</p>
+        <div class="boutons-auth">
+          <button routerLink="/login" class="btn-login">Se connecter</button>
+          <button routerLink="/signup" class="btn-signup">Créer un compte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button routerLink="/voitures" class="btn-retour">← Retour au catalogue</button>
+</div>

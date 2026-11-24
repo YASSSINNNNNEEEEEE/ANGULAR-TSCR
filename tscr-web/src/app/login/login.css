@@ -1,0 +1,63 @@
+/* FILE: src/app/login/login.css */
+.form-card {
+  max-width: 420px;
+  margin: 50px auto;
+  padding: 34px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e6ecf2;
+  box-shadow: 0 16px 36px rgba(31, 45, 61, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-card h2 {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 26px;
+}
+
+.form-card label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.form-card input {
+  padding: 12px 14px;
+  border: 2px solid #e6ecf2;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background: #f7fafc;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-card input:focus {
+  border-color: #0f8b8d;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(15, 139, 141, 0.12);
+}
+
+.btn {
+  margin-top: 20px;
+  padding: 13px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.btn-corail {
+  background: #ff8a4c;
+  color: white;
+  box-shadow: 0 6px 14px rgba(255, 138, 76, 0.28);
+}
+.btn-corail:hover { background: #f77a38; }
+
+.erreur { color: #e5484d; font-size: 13px; font-weight: 600; }
+.erreur-globale { color: #e5484d; text-align: center; font-weight: 600; }

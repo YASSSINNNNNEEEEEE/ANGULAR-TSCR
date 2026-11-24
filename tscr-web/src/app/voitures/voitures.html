@@ -1,0 +1,25 @@
+<div class="catalogue-container">
+  <h2>Notre Flotte de Véhicules</h2>
+  
+  <div class="grille-voitures">
+    <div class="carte-voiture" *ngFor="let v of voitures" [routerLink]="['/voitures', v.id]">
+      
+      <img [src]="v.photoUrl" [alt]="v.marque">
+      
+      <div class="infos">
+        <h3>{{ v.marque }} {{ v.modele }}</h3>
+        <p>📍 {{ v.ville }} • ⛽ {{ v.carburant }} • ⚙️ {{ v.transmission }}</p>
+        
+        <div class="prix">
+          <span *ngIf="v.reduction > 0" class="ancien-prix">{{ v.prixParJour }} DT</span>
+          <span class="nouveau-prix">
+            {{ v.reduction > 0 ? (v.prixParJour - (v.prixParJour * v.reduction / 100)) : v.prixParJour }} DT / jour
+          </span>
+        </div>
+        
+        <div class="badge-promo" *ngIf="v.reduction > 0">PROMO -{{ v.reduction }}%</div>
+      </div>
+      
+    </div>
+  </div>
+</div>

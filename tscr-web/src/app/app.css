@@ -1,0 +1,64 @@
+/* FILE: src/app/app.css */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: white;
+  border-bottom: 1px solid #e6ecf2;
+  box-shadow: 0 2px 10px rgba(31, 45, 61, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  color: #0f8b8d;
+  font-weight: 800;
+  font-size: 22px;
+  margin-right: 12px;
+}
+
+.bienvenue {
+  background: #eefafa;
+  border: 1px solid #c8eeee;
+  color: #0b6e70;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+.spacer { flex: 1; }
+
+.btn {
+  border: 2px solid transparent;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-bleu { background: #0f8b8d; color: white; }
+.btn-bleu:hover { background: #0b6e70; }
+
+.btn-contour { background: transparent; color: #0f8b8d; border-color: #0f8b8d; }
+.btn-contour:hover { background: #eefafa; }
+
+.btn-lien { background: transparent; color: #1f2d3d; font-size: 16px; }
+.btn-lien:hover { background: #f7fafc; }
+/* FILE: src/app/app.css (ADD at the bottom) */
+.badge {
+  display: inline-block;
+  min-width: 22px;
+  margin-left: 6px;
+  padding: 2px 7px;
+  background: #ff8a4c;
+  color: white;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}

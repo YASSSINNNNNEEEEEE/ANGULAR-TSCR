@@ -1,0 +1,12 @@
+.mes-resa { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+.vide { color: #777; }
+.resa { display: flex; justify-content: space-between; align-items: center;
+        background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.resa h3 { margin: 0 0 6px; }
+.resa p { margin: 2px 0; }
+.prix { font-weight: bold; }
+.etat { padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+.attente { background: #fff3cd; color: #8a6d00; }
+.acceptee { background: #d4edda; color: #1e7e34; }
+.refusee { background: #f8d7da; color: #b02a37; }

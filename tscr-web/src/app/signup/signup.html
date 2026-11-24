@@ -1,0 +1,54 @@
+<!-- FILE: src/app/signup/signup.html -->
+<div class="auth-container">
+  <h2>S'inscrire - TSCR</h2>
+
+  @if (message()) {
+    <div class="alert" [class.success]="!isError()" [class.error]="isError()">
+      {{ message() }}
+    </div>
+  }
+
+  <form (ngSubmit)="onSignup()" novalidate>
+
+    <input type="text" [(ngModel)]="user.nom" (ngModelChange)="onChange()" name="nom" placeholder="Nom">
+    @if (errors()['nom']) { <small>{{ errors()['nom'] }}</small> }
+
+    <input type="text" [(ngModel)]="user.prenom" (ngModelChange)="onChange()" name="prenom" placeholder="Prénom">
+    @if (errors()['prenom']) { <small>{{ errors()['prenom'] }}</small> }
+
+    <input type="email" [(ngModel)]="user.email" (ngModelChange)="onChange()" name="email" placeholder="Email">
+    @if (errors()['email']) { <small>{{ errors()['email'] }}</small> }
+
+    <input type="password" [(ngModel)]="user.motDePasse" (ngModelChange)="onChange()" name="motDePasse" placeholder="Mot de passe">
+    @if (errors()['motDePasse']) { <small>{{ errors()['motDePasse'] }}</small> }
+
+    <input type="text" [(ngModel)]="user.telephone" (ngModelChange)="onChange()" name="telephone" placeholder="Téléphone (8 chiffres)">
+    @if (errors()['telephone']) { <small>{{ errors()['telephone'] }}</small> }
+
+    <select [(ngModel)]="user.role" (ngModelChange)="onChange()" name="role">
+      <option value="CLIENT">Client</option>
+      <option value="AGENCE">Agence</option>
+    </select>
+
+    @if (user.role === 'CLIENT') {
+      <input type="text" [(ngModel)]="user.numeroPermis" (ngModelChange)="onChange()" name="numeroPermis" placeholder="Numéro de permis">
+      @if (errors()['numeroPermis']) { <small>{{ errors()['numeroPermis'] }}</small> }
+
+      <input type="text" [(ngModel)]="user.adresse" (ngModelChange)="onChange()" name="adresse" placeholder="Adresse">
+      @if (errors()['adresse']) { <small>{{ errors()['adresse'] }}</small> }
+    }
+
+    @if (user.role === 'AGENCE') {
+      <input type="text" [(ngModel)]="user.nomAgence" (ngModelChange)="onChange()" name="nomAgence" placeholder="Nom de l'agence">
+      @if (errors()['nomAgence']) { <small>{{ errors()['nomAgence'] }}</small> }
+
+      <input type="text" [(ngModel)]="user.ville" (ngModelChange)="onChange()" name="ville" placeholder="Ville">
+      @if (errors()['ville']) { <small>{{ errors()['ville'] }}</small> }
+
+      <input type="text" [(ngModel)]="user.siteWeb" (ngModelChange)="onChange()" name="siteWeb" placeholder="Site Web (optionnel)">
+      @if (errors()['siteWeb']) { <small>{{ errors()['siteWeb'] }}</small> }
+    }
+
+    <button type="submit">S'inscrire</button>
+  </form>
+</div>

@@ -1,0 +1,25 @@
+<div class="mes-resa">
+  <h2>Mes réservations</h2>
+
+  @if (liste().length === 0) {
+    <p class="vide">Vous n'avez aucune réservation.</p>
+  }
+
+  @for (r of liste(); track r.id) {
+    <div class="resa">
+      <div>
+        <h3>{{ nomVoiture(r.vehiculeId) }}</h3>
+        <p>📅 Du {{ r.dateDebut }} au {{ r.dateFin }}</p>
+        <p class="prix">{{ r.prixTotal }} DT</p>
+      </div>
+
+      @if (r.statut === 'EN_ATTENTE') {
+        <span class="etat attente">⏳ En attente de l'agence</span>
+      } @else if (r.statut === 'ACCEPTEE') {
+        <span class="etat acceptee">✔ Acceptée</span>
+      } @else {
+        <span class="etat refusee">✖ Refusée</span>
+      }
+    </div>
+  }
+</div>

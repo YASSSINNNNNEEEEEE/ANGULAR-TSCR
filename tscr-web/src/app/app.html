@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <span class="logo">🚗 TSCR</span>
+
+  @if (auth.user(); as u) {
+    <span class="bienvenue">Bienvenue {{ u.prenom || u.nom }}</span>
+
+    @if (u.role === 'AGENCE') {
+      <button class="btn btn-bleu" (click)="goToDemandes()">
+        🔔 Demandes
+        @if (resa.enAttente() > 0) {
+          <span class="badge">{{ resa.enAttente() }}</span>
+        }
+      </button>
+    }
+
+    @if (u.role === 'CLIENT') {
+      <button class="btn btn-bleu" (click)="goToMesReservations()">📋 Mes réservations</button>
+    }
+
+    <button class="btn btn-contour" (click)="logout()">Déconnexion</button>
+  } @else {
+    <button class="btn btn-bleu" (click)="goToLogin()">Se Connecter</button>
+    <button class="btn btn-contour" (click)="goToSignup()">S'inscrire</button>
+  }
+
+  <span class="spacer"></span>
+
+  <button class="btn btn-lien" (click)="goToVoitures()">Nos Véhicules</button>
+</nav>
+
+<router-outlet></router-outlet>

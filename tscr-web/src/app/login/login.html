@@ -1,0 +1,24 @@
+<!-- FILE: src/app/login/login.html -->
+<form class="form-card" #f="ngForm" (ngSubmit)="onLogin()" novalidate>
+  <h2>Connexion</h2>
+
+  <label>Email</label>
+  <input type="email" name="email" placeholder="exemple@mail.com"
+         [(ngModel)]="email" #e="ngModel" required email>
+  @if (e.invalid && (e.touched || f.submitted)) {
+    <small class="erreur">Email invalide.</small>
+  }
+
+  <label>Mot de passe</label>
+  <input type="password" name="motDePasse" placeholder="••••••••"
+         [(ngModel)]="motDePasse" #m="ngModel" required>
+  @if (m.invalid && (m.touched || f.submitted)) {
+    <small class="erreur">Le mot de passe est obligatoire.</small>
+  }
+
+  <button type="submit" class="btn btn-corail" [disabled]="f.invalid">
+    Se connecter
+  </button>
+
+  <p class="erreur-globale">{{ erreur }}</p>
+</form>
