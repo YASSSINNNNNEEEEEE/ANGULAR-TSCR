@@ -20,7 +20,6 @@ export class ReservationService {
   charger(agenceId: number) {
     this.http.get<any[]>(`${this.apiUrl}/agence/${agenceId}`).subscribe({
       next: (data: any[]) => this.reservations.set(data),
-      error: (err: any) => console.error(err)
     });
   }
 

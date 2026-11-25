@@ -36,70 +36,46 @@ export class VoitureDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('id'));
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-      if (isNaN(id)) {
+    this.voitureService.getVoitureById(id).subscribe({
+      next: (data) => {
+        this.voiture.set(data);
         this.chargement.set(false);
-        this.erreur.set('Identifiant de véhicule invalide.');
-        return;
+      },
+      error: (err) => {
+        this.chargement.set(false);
       }
-
-      this.chargement.set(true);
-      this.erreur.set('');
-
-      this.voitureService.getVoitureById(id).subscribe({
-        next: (data: Voiture) => {
-          this.voiture.set(data);
-          this.prixTotal = 0;
-          this.message.set('');
-          this.chargement.set(false);
-        },
-        error: (err: any) => {
-          console.error('Error loading car:', err);
-          this.erreur.set(`Impossible de charger ce véhicule (erreur ${err.status}).`);
-          this.chargement.set(false);
-        }
-      });
     });
   }
 
+  // price per day (with the promotion) x number of days
   calculerTotal() {
     const v = this.voiture();
     if (!v || !this.dateDebut || !this.dateFin) return;
 
-    const debut = new Date(this.dateDebut);
-    const fin = new Date(this.dateFin);
-    const jours = Math.ceil((fin.getTime() - debut.getTime()) / (1000 * 3600 * 24));
+    const jours = (new Date(this.dateFin).getTime() - new Date(this.dateDebut).getTime()) / 86400000;
+    const prixJour = v.prixParJour * (1 - v.reduction / 100);
 
-    if (jours > 0) {
-      let prix = v.prixParJour;
-      if (v.reduction > 0) {
-        prix = prix - (prix * v.reduction / 100);
-      }
-      this.prixTotal = jours * prix;
-    } else {
-      this.prixTotal = 0;
-    }
+    this.prixTotal = jours > 0 ? jours * prixJour : 0;
   }
 
   reserver() {
     const user = this.auth.user();
+    const v = this.voiture();
+
     if (!user) {
       this.router.navigate(['/login']);
       return;
     }
-
-    const v = this.voiture();
     if (!v) return;
 
-    if (!this.dateDebut || !this.dateFin || this.prixTotal <= 0) {
+    if (this.prixTotal <= 0) {
       this.messageErreur.set(true);
       this.message.set('Veuillez sélectionner des dates valides.');
       return;
     }
 
-    // FILE: src/app/voiture-detail/voiture-detail.ts (replace only this block)
     const reservation = {
       vehiculeId: v.id,
       clientId: user.id,
@@ -117,8 +93,7 @@ export class VoitureDetailComponent implements OnInit {
         this.dateFin = '';
         this.prixTotal = 0;
       },
-      error: (err: any) => {
-        console.error(err);
+      error: () => {
         this.messageErreur.set(true);
         this.message.set("La réservation n'a pas pu être enregistrée.");
       }

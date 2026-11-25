@@ -29,7 +29,7 @@ export class SignupComponent {
   errors = signal<Record<string, string>>({});
   message = signal('');
   isError = signal(false);
-  tentative = false; // becomes true after the first click on "S'inscrire"
+  tentative = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -38,52 +38,34 @@ export class SignupComponent {
     const u = this.user;
     const e: Record<string, string> = {};
 
-    const lettres = /^[A-Za-zÀ-ÿ' -]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const siteRegex = /^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/.*)?$/;
+    if (!/^[A-Za-zÀ-ÿ' -]{2,}$/.test(u.nom.trim()))
+      e['nom'] = 'Nom obligatoire (2 lettres minimum, lettres uniquement).';
 
-    // Nom
-    if (!u.nom.trim()) e['nom'] = 'Le nom est obligatoire.';
-    else if (u.nom.trim().length < 2) e['nom'] = 'Minimum 2 caractères.';
-    else if (!lettres.test(u.nom)) e['nom'] = 'Lettres uniquement.';
+    if (!/^[A-Za-zÀ-ÿ' -]{2,}$/.test(u.prenom.trim()))
+      e['prenom'] = 'Prénom obligatoire (2 lettres minimum, lettres uniquement).';
 
-    // Prénom
-    if (!u.prenom.trim()) e['prenom'] = 'Le prénom est obligatoire.';
-    else if (u.prenom.trim().length < 2) e['prenom'] = 'Minimum 2 caractères.';
-    else if (!lettres.test(u.prenom)) e['prenom'] = 'Lettres uniquement.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(u.email.trim()))
+      e['email'] = 'Email invalide.';
 
-    // Email
-    if (!u.email.trim()) e['email'] = "L'email est obligatoire.";
-    else if (!emailRegex.test(u.email)) e['email'] = 'Email invalide.';
+    if (u.motDePasse.length < 8 || !/[A-Za-z]/.test(u.motDePasse) || !/[0-9]/.test(u.motDePasse))
+      e['motDePasse'] = '8 caractères minimum, avec une lettre et un chiffre.';
 
-    // Mot de passe
-    if (!u.motDePasse) e['motDePasse'] = 'Le mot de passe est obligatoire.';
-    else if (u.motDePasse.length < 8) e['motDePasse'] = 'Minimum 8 caractères.';
-    else if (!/[A-Za-z]/.test(u.motDePasse) || !/[0-9]/.test(u.motDePasse))
-      e['motDePasse'] = 'Au moins une lettre et un chiffre.';
+    if (!/^[0-9]{8}$/.test(u.telephone.trim()))
+      e['telephone'] = 'Le téléphone doit contenir exactement 8 chiffres.';
 
-    // Téléphone
-    if (!u.telephone.trim()) e['telephone'] = 'Le téléphone est obligatoire.';
-    else if (!/^[0-9]{8}$/.test(u.telephone)) e['telephone'] = 'Exactement 8 chiffres.';
-
-    // Client
     if (u.role === 'CLIENT') {
-      if (!u.numeroPermis.trim()) e['numeroPermis'] = 'Le numéro de permis est obligatoire.';
-      else if (u.numeroPermis.trim().length < 4) e['numeroPermis'] = 'Minimum 4 caractères.';
-
-      if (!u.adresse.trim()) e['adresse'] = "L'adresse est obligatoire.";
-      else if (u.adresse.trim().length < 5) e['adresse'] = 'Minimum 5 caractères.';
+      if (u.numeroPermis.trim().length < 4)
+        e['numeroPermis'] = 'Numéro de permis obligatoire (4 caractères minimum).';
+      if (u.adresse.trim().length < 5)
+        e['adresse'] = 'Adresse obligatoire (5 caractères minimum).';
     }
 
-    // Agence
     if (u.role === 'AGENCE') {
-      if (!u.nomAgence.trim()) e['nomAgence'] = "Le nom de l'agence est obligatoire.";
-      else if (u.nomAgence.trim().length < 2) e['nomAgence'] = 'Minimum 2 caractères.';
-
-      if (!u.ville.trim()) e['ville'] = 'La ville est obligatoire.';
-      else if (u.ville.trim().length < 2) e['ville'] = 'Minimum 2 caractères.';
-
-      if (u.siteWeb.trim() && !siteRegex.test(u.siteWeb.trim()))
+      if (u.nomAgence.trim().length < 2)
+        e['nomAgence'] = "Nom de l'agence obligatoire.";
+      if (u.ville.trim().length < 2)
+        e['ville'] = 'Ville obligatoire.';
+      if (u.siteWeb.trim() && !/^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/.*)?$/.test(u.siteWeb.trim()))
         e['siteWeb'] = 'Site web invalide.';
     }
 
@@ -91,7 +73,7 @@ export class SignupComponent {
     return Object.keys(e).length === 0;
   }
 
-  // called on every keystroke: refresh the errors only after the first attempt
+  // refresh the red messages while typing, only after the first click
   onChange() {
     if (this.tentative) this.valider();
   }
@@ -111,8 +93,7 @@ export class SignupComponent {
         this.message.set('Inscription réussie ! Redirection...');
         setTimeout(() => this.router.navigate(['/login']), 1500);
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         this.isError.set(true);
         this.message.set('Inscription impossible (email déjà utilisé ?).');
       }

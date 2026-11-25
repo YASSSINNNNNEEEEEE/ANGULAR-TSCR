@@ -1,5 +1,4 @@
-// FILE: src/app/demandes/demandes.ts (NEW)
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth';
@@ -16,18 +15,9 @@ import { VoitureService } from '../voiture';
 export class DemandesComponent implements OnInit {
   voitures = signal<any[]>([]);
 
-  // pending requests first, then the newest
-  liste = computed(() =>
-    [...this.resa.reservations()].sort((a, b) => {
-      if (a.statut === 'EN_ATTENTE' && b.statut !== 'EN_ATTENTE') return -1;
-      if (a.statut !== 'EN_ATTENTE' && b.statut === 'EN_ATTENTE') return 1;
-      return b.id - a.id;
-    })
-  );
-
   constructor(
-    public auth: AuthService,
-    public resa: ReservationService,
+    private auth: AuthService,
+    private resa: ReservationService,
     private voitureService: VoitureService,
     private router: Router
   ) {}
@@ -39,21 +29,24 @@ export class DemandesComponent implements OnInit {
       return;
     }
     this.resa.charger(u.id);
-    this.voitureService.getAllVoitures().subscribe({
-      next: (data: any[]) => this.voitures.set(data),
-      error: (err: any) => console.error(err)
-    });
+    this.voitureService.getAllVoitures().subscribe(data => this.voitures.set(data));
   }
 
+  // the list shown on the page: newest first
+  liste() {
+    return [...this.resa.reservations()].sort((a, b) => b.id - a.id);
+  }
+
+  // turns vehiculeId 9 into "Mercedes CLA"
   nomVoiture(id: number): string {
     const v = this.voitures().find(x => x.id === id);
     return v ? `${v.marque} ${v.modele}` : `Véhicule #${id}`;
   }
 
+  // Accepter / Refuser buttons
   repondre(id: number, statut: string) {
-    this.resa.changerStatut(id, statut).subscribe({
-      next: () => this.resa.charger(this.auth.user().id),
-      error: (err: any) => console.error(err)
+    this.resa.changerStatut(id, statut).subscribe(() => {
+      this.resa.charger(this.auth.user().id);
     });
   }
 }

@@ -22,11 +22,9 @@ export class LoginComponent {
     this.erreur = '';
     this.authService.login(this.email, this.motDePasse).subscribe({
       next: (res: any) => {
-        console.log('LOGIN RESPONSE:', res);
         this.router.navigate(['/voitures']);
       },
       error: (err: any) => {
-        console.error('LOGIN ERROR:', err);
         this.erreur = 'Email ou mot de passe incorrect.';
       }
     });

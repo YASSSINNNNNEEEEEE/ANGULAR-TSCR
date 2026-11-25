@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// FILE: src/app/mes-reservations/mes-reservations.ts
+import { Component, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, timer } from 'rxjs';
 import { AuthService } from '../auth';
 import { ReservationService } from '../reservation-service';
 import { VoitureService } from '../voiture';
@@ -9,14 +8,12 @@ import { VoitureService } from '../voiture';
 @Component({
   selector: 'app-mes-reservations',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './mes-reservations.html',
   styleUrls: ['./mes-reservations.css']
 })
-export class MesReservationsComponent implements OnInit, OnDestroy {
+export class MesReservationsComponent implements OnInit {
   liste = signal<any[]>([]);
   voitures = signal<any[]>([]);
-  private sub?: Subscription;
 
   constructor(
     private auth: AuthService,
@@ -27,25 +24,16 @@ export class MesReservationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const u = this.auth.user();
-    if (!u || u.role !== 'CLIENT') {
+    if (!u) {
       this.router.navigate(['/login']);
       return;
     }
-    this.voitureService.getAllVoitures().subscribe({
-      next: (d: any[]) => this.voitures.set(d),
-      error: (e: any) => console.error(e)
-    });
-    // refresh every 10 seconds so the answer of the agency appears by itself
-    this.sub = timer(0, 10000).subscribe(() => {
-      this.resa.parClient(u.id).subscribe({
-        next: (data: any[]) => this.liste.set([...data].sort((a, b) => b.id - a.id)),
-        error: (e: any) => console.error(e)
-      });
-    });
-  }
 
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
+    this.voitureService.getAllVoitures().subscribe(data => this.voitures.set(data));
+
+    this.resa.parClient(u.id).subscribe(data => {
+      this.liste.set([...data].sort((a, b) => b.id - a.id));
+    });
   }
 
   nomVoiture(id: number): string {
