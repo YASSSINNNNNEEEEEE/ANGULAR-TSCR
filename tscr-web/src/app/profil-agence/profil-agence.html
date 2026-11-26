@@ -1,0 +1,44 @@
+<!-- FILE: src/app/profil-agence/profil-agence.html (replace everything) -->
+<div class="profil">
+  <h2>Profil de l'agence <span class="role">AGENCE</span></h2>
+
+  @if (message()) {
+    <div class="alert" [class.success]="!isError()" [class.error]="isError()">{{ message() }}</div>
+  }
+
+  <form (ngSubmit)="enregistrer()" novalidate>
+    <label>Nom du responsable</label>
+    <input type="text" [(ngModel)]="form.nom" name="nom">
+    @if (errors()['nom']) { <small>{{ errors()['nom'] }}</small> }
+
+    <label>Prénom</label>
+    <input type="text" [(ngModel)]="form.prenom" name="prenom">
+    @if (errors()['prenom']) { <small>{{ errors()['prenom'] }}</small> }
+
+    <label>Email <span class="optionnel">(laisser vide pour ne pas changer)</span></label>
+    <input type="email" [(ngModel)]="form.email" name="email" [placeholder]="emailActuel">
+    @if (errors()['email']) { <small>{{ errors()['email'] }}</small> }
+
+    <label>Téléphone</label>
+    <input type="text" [(ngModel)]="form.telephone" name="telephone">
+    @if (errors()['telephone']) { <small>{{ errors()['telephone'] }}</small> }
+
+    <label>Nom de l'agence</label>
+    <input type="text" [(ngModel)]="form.nomAgence" name="nomAgence">
+    @if (errors()['nomAgence']) { <small>{{ errors()['nomAgence'] }}</small> }
+
+    <label>Ville</label>
+    <input type="text" [(ngModel)]="form.ville" name="ville">
+    @if (errors()['ville']) { <small>{{ errors()['ville'] }}</small> }
+
+    <label>Site Web</label>
+    <input type="text" [(ngModel)]="form.siteWeb" name="siteWeb">
+    @if (errors()['siteWeb']) { <small>{{ errors()['siteWeb'] }}</small> }
+
+    <label>Nouveau mot de passe <span class="optionnel">(laisser vide pour ne pas changer)</span></label>
+    <input type="password" [(ngModel)]="form.motDePasse" name="motDePasse">
+    @if (errors()['motDePasse']) { <small>{{ errors()['motDePasse'] }}</small> }
+
+    <button type="submit">Enregistrer</button>
+  </form>
+</div>

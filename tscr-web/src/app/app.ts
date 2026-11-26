@@ -1,9 +1,10 @@
-// FILE: src/app/app.ts (replace)
+// FILE: src/app/app.ts (replace everything)
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { timer } from 'rxjs';
 import { AuthService } from './auth';
 import { ReservationService } from './reservation-service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -28,27 +29,21 @@ export class App {
     });
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
+  goToLogin() { this.router.navigate(['/login']); }
+  goToSignup() { this.router.navigate(['/signup']); }
+  goToVoitures() { this.router.navigate(['/voitures']); }
+  goToDemandes() { this.router.navigate(['/demandes']); }
+  goToMesReservations() { this.router.navigate(['/mes-reservations']); }
+
+  // client -> /profil-client, agency -> /profil-agence
+  goToProfil() {
+    const u = this.auth.user();
+    this.router.navigate([u?.role === 'AGENCE' ? '/profil-agence' : '/profil-client']);
   }
 
-  goToSignup() {
-    this.router.navigate(['/signup']);
-  }
-
-  goToVoitures() {
-    this.router.navigate(['/voitures']);
-  }
-
-  goToDemandes() {
-    this.router.navigate(['/demandes']);
-  }
-  goToMesReservations() {
-    this.router.navigate(['/mes-reservations']);
-  }
   logout() {
     this.auth.logout();
     this.resa.reservations.set([]);
     this.router.navigate(['/login']);
   }
-}
+} 

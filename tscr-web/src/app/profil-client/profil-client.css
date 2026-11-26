@@ -1,0 +1,58 @@
+/* FILE: src/app/profil-client/profil-client.css */
+.profil {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 34px;
+  background: white;
+  border: 1px solid #e6ecf2;
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(31, 45, 61, 0.07);
+}
+.profil h2 { margin: 0 0 22px; font-size: 26px; color: #1f2d3d; }
+.profil h2::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: #ff8a4c;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.role {
+  background: #eefafa;
+  border: 1px solid #c8eeee;
+  color: #0b6e70;
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+form { display: flex; flex-direction: column; gap: 6px; }
+label { font-weight: 600; font-size: 14px; margin-top: 10px; color: #1f2d3d; }
+.optionnel { font-weight: 400; color: #6b7c8f; font-size: 12px; }
+input {
+  padding: 12px 14px;
+  border: 2px solid #e6ecf2;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #f7fafc;
+  outline: none;
+}
+input:focus { border-color: #0f8b8d; background: white; box-shadow: 0 0 0 4px rgba(15, 139, 141, 0.12); }
+small { color: #e5484d; font-size: 13px; font-weight: 600; }
+button[type="submit"] {
+  margin-top: 20px;
+  padding: 13px;
+  border: none;
+  border-radius: 999px;
+  background: #ff8a4c;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+button[type="submit"]:hover { background: #f77a38; }
+.alert { padding: 12px 16px; border-radius: 10px; font-weight: 700; margin-bottom: 16px; text-align: center; }
+.alert.success { background: #e7f8ee; color: #1c6b3a; }
+.alert.error { background: #fdecec; color: #e5484d; }

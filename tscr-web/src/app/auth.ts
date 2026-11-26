@@ -1,4 +1,4 @@
-// FILE: src/app/auth.ts
+// FILE: src/app/auth.ts (replace everything)
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -24,6 +24,16 @@ export class AuthService {
 
   signup(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, userData);
+  }
+
+  // saves the profile, then refreshes the logged-in user everywhere
+  modifierProfil(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/${id}`, data).pipe(
+      tap((res: any) => {
+        localStorage.setItem('user', JSON.stringify(res));
+        this.user.set(res);
+      })
+    );
   }
 
   logout() {
